@@ -11,7 +11,7 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     username = Column(String)
     password = Column(String)
-    data_created = Column(DateTime, default=_dt.datetime.utcnow)
+    date_created = Column(DateTime, default=_dt.datetime.utcnow)
 
     def verify_password(self, password: str):
         return _hash.bcrypt.verify(password, self.password)
