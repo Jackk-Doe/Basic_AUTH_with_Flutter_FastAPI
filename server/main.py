@@ -1,15 +1,15 @@
 from fastapi import FastAPI
 import uvicorn
 
-from database import engine
 from routes import router as _user_routes
-import models
+import database as _db
+import models as _models
 
 
 app = FastAPI()
 
 # Create Sqlite DB and table, if not existed
-models.Base.metadata.create_all(bind=engine)
+_models.Base.metadata.create_all(bind=_db.engine)
 
 
 @app.get("/")
