@@ -1,8 +1,14 @@
 from fastapi import FastAPI
 import uvicorn
 
+from database import engine
+import models
+
 
 app = FastAPI()
+
+# Create Sqlite DB and table, if not existed
+models.Base.metadata.create_all(bind=engine)
 
 
 @app.get("/")
