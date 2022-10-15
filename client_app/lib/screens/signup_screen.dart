@@ -1,3 +1,4 @@
+import 'package:client_app/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
@@ -15,7 +16,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
 
-  void signUp() {}
+  void signUp() {
+    // TODO : SignIn function
+  }
+
+  void changeToSignIn() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const SignInPage()),
+    );
+  }
 
   @override
   void initState() {
@@ -61,9 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 10),
 
             TextButton(
-              onPressed: () {
-                // TODO : Change to SignIn page
-              },
+              onPressed: changeToSignIn,
               child: const Text(
                 'go to Login user',
                 style: TextStyle(fontSize: 16),
