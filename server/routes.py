@@ -24,8 +24,8 @@ def testCreate():
 
 @router.post("/signup")
 async def signUp(datas: _schemas.SignUpUser, db: Session = Depends(get_db)):
-    _db_user = await _services.get_user_by_email(datas.email, db)
-    if _db_user:
+    _existed_user = await _services.get_user_by_email(datas.email, db)
+    if _existed_user:
         raise HTTPException(status_code=400, detail="User with this email already existed")
 
     _user = await _services.create_user(datas=datas, db=db)
