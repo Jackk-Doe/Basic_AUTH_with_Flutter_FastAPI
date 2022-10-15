@@ -32,3 +32,17 @@ async def signUp(datas: _schemas.SignUpUser, db: Session = Depends(get_db)):
     _token = await _services.genereate_token(user=_user)
 
     return _schemas.UserReturn(email=_user.email, username=_user.username, token=_token)
+
+
+@router.post("/signin")
+async def signIn(datas: _schemas.SignInUser, db: Session = Depends(get_db)):
+    _existed_user = await _services.get_user_by_email(datas.email, db)
+    if not _existed_user:
+        raise HTTPException(status_code=404, detail="User with this email is not found")
+
+    if not _existed_user.verify_password(datas.password):
+        raise HTTPException(status_code=401, detail="Password not matched")
+
+    _token = await _services.genereate_token(user=_existed_user)
+
+    return _schemas.UserReturn(email=_existed_user.email, username=_existed_user.username, token=_token)
