@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _usernameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
 
-  void signUp() {
+  void _signUp() {
     // TODO : SignIn function
   }
 
-  void changeToSignIn() {
+  void _changeToSignIn() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const SignInPage()),
@@ -67,11 +67,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             CustomTextField(controller: _confirmPasswordController, hintText: "Confirm Password"),
             const SizedBox(height: 30),
 
-            CustomElevatedButton(onPressfunc: signUp, buttonText: 'Sign Up'),
+            CustomElevatedButton(onPressfunc: _signUp, buttonText: 'Sign Up'),
             const SizedBox(height: 10),
 
             TextButton(
-              onPressed: changeToSignIn,
+              onPressed: _changeToSignIn,
               child: const Text(
                 'go to Login user',
                 style: TextStyle(fontSize: 16),
