@@ -27,7 +27,16 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SignUpPage(),
+        home: Consumer<UserProvider>(
+          builder: (context, userProvider, child) {
+            
+            if (userProvider.user != null) {
+              return const HomePage();
+            }
+
+            return const SignUpPage();
+          },
+        ),
       ),
     );
   }
