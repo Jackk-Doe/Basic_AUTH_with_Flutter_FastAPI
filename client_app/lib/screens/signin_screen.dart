@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:client_app/screens/screens.dart';
 import 'package:client_app/widgets/widgets.dart';
+import 'package:client_app/services/services.dart';
+import 'package:client_app/models/models.dart';
+import 'package:client_app/providers/user_provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -14,15 +18,38 @@ class _SignInPageState extends State<SignInPage> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
 
-  void _signIn() {
-    // TODO : SignIn function
+  Future<void> _signInSuccess(User userData) async {
+    bool isSaveSuccess = await LocalStoreServices.saveInLocal(context, userData);
+      if (isSaveSuccess) {
+        if (!mounted) return;
+        UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setUserFromModel(userData);
+      }
   }
 
-  void _changeToSignUp() {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(builder: (context) => const SignUpPage()),
+  /// Trigger this when "Sign In" button is clicked
+  void _signIn() async {
+    // NOTE : If signing-ip failed, return null
+    User? userAccount = await AuthService.signInUser(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
     );
+
+    // NOTE : Process belows, if Sign-Ip via API successfully
+    if (userAccount != null) {
+      await _signInSuccess(userAccount);
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
+  }
+
+  /// Change to SignUp Page
+  void _changeToSignUp() {
+    // Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(builder: (context) => const SignUpPage()),
+    // );
+    Navigator.of(context).pop();
   }
 
   @override

@@ -22,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _confirmPasswordController;
 
   /// Call this if Sign-Up via backend-API successfully
-  void _signUpSuccess(User userData) async {
+  Future<void> _signUpSuccess(User userData) async {
     bool isSaveSuccess = await LocalStoreServices.saveInLocal(context, userData);
     if (isSaveSuccess) {
       if (!mounted) return;
@@ -49,13 +49,13 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (userAccount != null) {
       // NOTE : Process, if Sign-Up via API successfully
-      _signUpSuccess(userAccount);
+      await _signUpSuccess(userAccount);
     } 
   }
 
   /// Change to SignIn Page
   void _changeToSignIn() {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SignInPage()),
     );
