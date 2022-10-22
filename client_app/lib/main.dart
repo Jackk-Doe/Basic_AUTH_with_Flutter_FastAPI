@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:client_app/screens/screens.dart';
+import 'package:client_app/providers/providers.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,12 +18,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Basic AUTH with Flutter + FastAPI',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Basic AUTH with Flutter + FastAPI',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const SignUpPage(),
       ),
-      home: const SignUpPage()
     );
   }
 }
