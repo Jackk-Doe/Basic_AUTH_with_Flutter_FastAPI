@@ -1,7 +1,9 @@
 import 'package:client_app/screens/screens.dart';
+import 'package:client_app/services/services.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
+import '../utils/utils.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -17,7 +19,18 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _confirmPasswordController;
 
   void _signUp() {
-    // TODO : SignIn function
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      Utils.showSnackBar(context, 'Password and Confirm-Passord does not match!');
+      return;
+    }
+
+    AuthService.signUpUser(
+      context: context, 
+      email: _emailController.text, 
+      username: _usernameController.text, 
+      password: _passwordController.text,
+    );
   }
 
   void _changeToSignIn() {
