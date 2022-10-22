@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:client_app/screens/screens.dart';
 import 'package:client_app/services/services.dart';
-import 'package:flutter/material.dart';
-
+import '../models/models.dart';
 import '../widgets/widgets.dart';
 import '../utils/utils.dart';
+import '../providers/providers.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -18,21 +21,38 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
 
-  void _signUp() {
+  /// Call this if Sign-Up via backend-API successfully
+  void _signUpSuccess(User userData) async {
+    bool isSaveSuccess = await LocalStoreServices.saveInLocal(context, userData);
+    if (isSaveSuccess) {
+      // NOTE : Update UserProvider
+      UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider.setUserFromModel(userData);
+    }
+  }
 
+  /// Trigger this when "Sign Up" button is clicked
+  void _signUp() async {
     if (_passwordController.text != _confirmPasswordController.text) {
       Utils.showSnackBar(context, 'Password and Confirm-Passord does not match!');
       return;
     }
 
-    AuthService.signUpUser(
+    // NOTE : If signing-up failed, return null
+    User? userAccount = await AuthService.signUpUser(
       context: context, 
       email: _emailController.text, 
       username: _usernameController.text, 
       password: _passwordController.text,
     );
+
+    if (userAccount != null) {
+      // NOTE : Process, if Sign-Up via API successfully
+      _signUpSuccess(userAccount);
+    } 
   }
 
+  /// Change to SignIn Page
   void _changeToSignIn() {
     Navigator.pushReplacement(
       context,
