@@ -20,4 +20,16 @@ class LocalStoreServices {
     }
   }
 
+  /// Remove token data from local storage,
+  /// Success : return True,
+  /// Fail : return False
+  static Future<bool> removeFromLocal(BuildContext context) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      return await pref.remove(Constants.LOCAL_STORAGE_TOKEN_KEY);
+    } catch (e) {
+      Utils.showSnackBar(context, e.toString());
+      return false;
+    }
+  }
 }
