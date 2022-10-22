@@ -25,6 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void _signUpSuccess(User userData) async {
     bool isSaveSuccess = await LocalStoreServices.saveInLocal(context, userData);
     if (isSaveSuccess) {
+      if (!mounted) return;
       // NOTE : Update UserProvider
       UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
       userProvider.setUserFromModel(userData);
