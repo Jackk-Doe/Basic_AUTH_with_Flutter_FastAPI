@@ -1,15 +1,20 @@
+import 'package:client_app/providers/user_provider.dart';
 import 'package:client_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   void _logOut() {
-    // TODO : LogOut account
+    // TODO : LogOut User
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user!;
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -18,13 +23,13 @@ class HomePage extends StatelessWidget {
             const Text("Home Page", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const SizedBox(height: 35),
 
-            const Text("Username : something", style: TextStyle(fontSize: 18)),
+            Text("Username : ${user.username}", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 15),
 
-            const Text("Email : something@something.com", style: TextStyle(fontSize: 18)),
+            Text("Email : ${user.email}", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 15),
 
-            const Text("Account ID : someID", style: TextStyle(fontSize: 18)),
+            Text("JWT token : ${user.token}", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 30),
 
             CustomElevatedButton(
