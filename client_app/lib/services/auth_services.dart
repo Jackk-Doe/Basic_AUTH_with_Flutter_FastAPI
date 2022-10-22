@@ -8,9 +8,10 @@ import '../utils/utils.dart';
 
 class AuthService {
 
-  /// A function for Sign-Up User
-  /// Plus backend-API connection
-  static void signUpUser({
+  /// A function for Sign-Up user account,
+  /// Success : return User model,
+  /// Fail : return null
+  static Future<User?> signUpUser({
     required BuildContext context,
     required String email,
     required String username,
@@ -27,16 +28,19 @@ class AuthService {
         },
       );
 
-      ErrorHandling.httpErrorHandling(
-        response: res,
-        context: context,
-        onSuccess: () {
-          // TODO : update when sign up success
-          Utils.showSnackBar(context, 'User has sign-up successfully!!');
-        },
-      );
+      bool hasError = ErrorHandling.httpErrorHandling(response: res, context: context);
+
+      if (hasError) {
+        /// Has HTTP Error
+        return null;
+      }
+
+      /// Execute successfully
+      return User.fromJson(res.body);
+
     } catch (e) {
       Utils.showSnackBar(context, e.toString());
+      return null;
     }
   }
 }

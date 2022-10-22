@@ -6,28 +6,29 @@ import 'utils.dart';
 
 class ErrorHandling {
 
-  static void httpErrorHandling({
+  /// Return True if Error is found and show SnackBar, 
+  /// else return False.
+  static bool httpErrorHandling({
     required http.Response response,
     required BuildContext context,
-    required VoidCallback onSuccess,
   }) {
+    
     switch (response.statusCode) {
       case 200:
-        onSuccess();
-        break;
+        return false;
       case 400:
         Utils.showSnackBar(context, jsonDecode(response.body)['detail']);
-        break;
+        return true;
       case 401:
         Utils.showSnackBar(context, jsonDecode(response.body)['detail']);
-        break;
+        return true;
       case 404:
         Utils.showSnackBar(context, jsonDecode(response.body)['detail']);
-        break;
+        return true;
       default:
         // Other possible Error
         Utils.showSnackBar(context, jsonDecode(response.body));
-        
+        return true;
     }
   }
 }
