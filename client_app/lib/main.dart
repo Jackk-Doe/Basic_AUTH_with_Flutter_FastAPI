@@ -18,10 +18,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider()),
-      ],
+    return ChangeNotifierProvider(
+      create: (context) => UserProvider(),
       child: MaterialApp(
         title: 'Basic AUTH with Flutter + FastAPI',
         theme: ThemeData(
@@ -29,7 +27,7 @@ class _MyAppState extends State<MyApp> {
         ),
         home: Consumer<UserProvider>(
           builder: (context, userProvider, child) {
-            
+
             if (userProvider.user != null) {
               return const HomePage();
             }
