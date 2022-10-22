@@ -27,4 +27,9 @@ class UserProvider extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+
+  void setUserNull() {
+    _user = null;
+    notifyListeners();
+  }
 }
