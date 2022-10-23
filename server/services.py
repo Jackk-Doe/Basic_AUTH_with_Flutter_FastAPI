@@ -1,8 +1,9 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 from email_validator import validate_email, EmailNotValidError
 from passlib.hash import bcrypt
 from jwt import encode as jwt_encode
+from jwt import decode as jwt_decode
 
 import models as _models
 import schemas as _schemas
@@ -42,3 +43,13 @@ async def genereate_token(user: _models.User) -> str:
     # NOTE : Combine [email] & [id] with [_JWT_SECRET] to generate JWT key
     _token = jwt_encode(_user_dict, _JWT_SECRET)
     return _token
+
+
+async def get_user_via_token(token: str, db: Session) -> _models.User:
+    try:
+        _payload = jwt_decode(token, _JWT_SECRET, algorithms=["HS256"])
+        _user = db.query(_models.User).get(_payload["id"])
+    except:
+        raise HTTPException(status_code=401, detail="Problem with given token")
+
+    return _user
