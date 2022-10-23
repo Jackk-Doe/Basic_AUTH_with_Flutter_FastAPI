@@ -72,4 +72,31 @@ class AuthService {
       return null;
     }
   }
+
+
+  /// A function for getting User account's datas via token,
+  /// Success : return User model,
+  /// Fail : return null
+  static Future<User?> getUser({
+    required BuildContext context,
+    required String token,
+  }) async {
+    try {
+      http.Response res = await http.get(
+        Uri.parse("${Constants.URI}/users/me"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (res.statusCode != 200) return null;
+
+      return User.fromJson(res.body);
+
+    } catch (e) {
+      Utils.showSnackBar(context, e.toString());
+      return null;
+    }
+  }
 }
